@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentage Calculator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 380px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      font-size: 14px;
+      display: block;
+      margin-top: 12px;
+      text-align: left;
+      color: #444;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #6a5acd;
+      outline: none;
+      box-shadow: 0 0 8px rgba(106,90,205,0.3);
+    }
+
+    button {
+      background: #6a5acd;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 18px;
+      border: none;
+    }
+
+    button:hover {
+      background: #5a4abb;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #f9f9f9;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Percentage Calculator</h2>
+
+    <label for="calcType">Select Calculation:</label>
+    <select id="calcType" onchange="updateFields()">
+      <option value="1">Find % of a Number</option>
+      <option value="2">Find What % One Number is of Another</option>
+      <option value="3">Find Number from %</option>
+    </select>
+
+    <div id="inputs"></div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="result">--</div>
+  </div>
+
+  <script>
+    function updateFields() {
+      const type = document.getElementById("calcType").value;
+      const inputsDiv = document.getElementById("inputs");
+      let html = "";
+
+      if (type == "1") {
+        html = `
+          <label>Percentage (%)</label>
+          <input type="number" id="percent" placeholder="Enter percentage">
+          <label>Number</label>
+          <input type="number" id="number" placeholder="Enter number">
+        `;
+      } else if (type == "2") {
+        html = `
+          <label>Part Value</label>
+          <input type="number" id="part" placeholder="Enter part value">
+          <label>Total Value</label>
+          <input type="number" id="total" placeholder="Enter total value">
+        `;
+      } else {
+        html = `
+          <label>Percentage (%)</label>
+          <input type="number" id="percent" placeholder="Enter percentage">
+          <label>Part Value</label>
+          <input type="number" id="part" placeholder="Enter part value">
+        `;
+      }
+      inputsDiv.innerHTML = html;
+    }
+
+    function calculate() {
+      const type = document.getElementById("calcType").value;
+      let result = "";
+
+      if (type == "1") {
+        let percent = parseFloat(document.getElementById("percent").value);
+        let number = parseFloat(document.getElementById("number").value);
+        if (!isNaN(percent) && !isNaN(number)) {
+          result = (percent / 100) * number;
+          result = result.toFixed(2);
+        } else {
+          result = "Invalid input";
+        }
+
+      } else if (type == "2") {
+        let part = parseFloat(document.getElementById("part").value);
+        let total = parseFloat(document.getElementById("total").value);
+        if (!isNaN(part) && !isNaN(total) && total != 0) {
+          result = (part / total) * 100;
+          result = result.toFixed(2) + "%";
+        } else {
+          result = "Invalid input";
+        }
+
+      } else {
+        let percent = parseFloat(document.getElementById("percent").value);
+        let part = parseFloat(document.getElementById("part").value);
+        if (!isNaN(percent) && !isNaN(part) && percent != 0) {
+          result = (part * 100) / percent;
+          result = result.toFixed(2);
+        } else {
+          result = "Invalid input";
+        }
+      }
+
+      document.getElementById("result").innerText = result;
+    }
+
+    // Load default input fields
+    updateFields();
+  </script>
+</body>
+</html>
